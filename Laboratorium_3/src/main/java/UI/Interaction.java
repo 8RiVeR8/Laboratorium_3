@@ -7,8 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-import static Logic.OpinionService.addOpinion;
-import static Logic.OpinionService.showPerson;
+import static Logic.OpinionService.*;
 
 public class Interaction {
     OpinionService Opinion = new OpinionService();
@@ -42,7 +41,7 @@ public class Interaction {
                 addPerson();
                 break;
             case 2:
-                Opinion.deleteOpinion();
+                deleteOpinions();
                 break;
             case 3:
                 showOpinion();
@@ -97,6 +96,13 @@ public class Interaction {
         return id;
     }
 
+    public static int setNumber(){
+        System.out.println("Enter number of opinion you want to delete (starts from 1) ");
+        int number = scanner.nextInt();
+        return number;
+    }
+
+
     public static LocalDate setDate(){
         System.out.println("Please enter your date (yyyy-MM-dd)");
         String inputData = scanner.nextLine();
@@ -128,5 +134,10 @@ public class Interaction {
     public void showOpinion(){
         showPerson(setId());
     }
+
+    public void deleteOpinions(){
+        deleteOpinion(setId(), setNumber());
+    }
+
 
 }

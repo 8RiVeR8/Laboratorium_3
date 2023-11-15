@@ -1,8 +1,10 @@
 package org.example;
 
+import UI.Interaction;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
-        System.out.println("Próba");
+        Interaction interaction = new Interaction();
+        interaction.startInteraction();
     }
 }

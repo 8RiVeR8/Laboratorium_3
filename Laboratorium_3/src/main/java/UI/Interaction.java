@@ -1,6 +1,4 @@
 package UI;
-
-import Logic.OpinionService;
 import Model.opinionType;
 
 import java.time.LocalDate;
@@ -10,7 +8,6 @@ import java.util.Scanner;
 import static Logic.OpinionService.*;
 
 public class Interaction {
-    OpinionService Opinion = new OpinionService();
     static Scanner scanner = new Scanner(System.in);
 
     public void startInteraction() {
@@ -37,23 +34,12 @@ public class Interaction {
 
     private void processChoice(int choice) {
         switch (choice) {
-            case 1:
-                addPerson();
-                break;
-            case 2:
-                deleteOpinions();
-                break;
-            case 3:
-                showOpinion();
-                break;
-            case 4:
-                Opinion.showAll();
-                break;
-            case 5:
-                System.out.println("Interaction completed. Thank you!");
-                break;
-            default:
-                System.out.println("Incorrect choice. Please choose again.");
+            case 1 -> addPerson();
+            case 2 -> deleteOpinions();
+            case 3 -> showOpinion();
+            case 4 -> showAll();
+            case 5 -> System.out.println("Interaction completed. Thank you!");
+            default -> System.out.println("Incorrect choice. Please choose again.");
         }
     }
 
@@ -61,10 +47,10 @@ public class Interaction {
         System.out.println("Enter opinion type \"p\" - POSITIVE  or \"n\" - NEGATIVE");
         String opinionTypes = scanner.nextLine();
         //scanner.nextLine();
-        if (opinionTypes.toLowerCase().equals("p")) {
+        if (opinionTypes.equalsIgnoreCase("p")) {
             return opinionType.POSITIVE;
         } else {
-            if (opinionTypes.toLowerCase().equals("n")){
+            if (opinionTypes.equalsIgnoreCase("n")){
                 return opinionType.NEGATIVE;
             }else{
                 System.out.println("Incorrect opinion");
@@ -98,8 +84,7 @@ public class Interaction {
 
     public static int setNumber(){
         System.out.println("Enter number of opinion you want to delete (starts from 1) ");
-        int number = scanner.nextInt();
-        return number;
+        return scanner.nextInt();
     }
 
 
@@ -123,8 +108,7 @@ public class Interaction {
     public static String setOpinion(){
         System.out.println("Please enter opinion about worker: ");
         scanner.nextLine();
-        String opinion = scanner.nextLine();
-        return opinion;
+        return scanner.nextLine();
     }
 
     public void addPerson(){

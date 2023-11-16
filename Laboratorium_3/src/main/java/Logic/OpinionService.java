@@ -1,15 +1,17 @@
 package Logic;
 import Model.Person;
 import Model.opinionType;
-import UI.Interaction;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
-import static UI.Interaction.setOpinion;
+
+import static Logic.SQLiteService.getDatabase;
 
 public class OpinionService {
-    static Scanner scanner = new Scanner(System.in);
-    static ArrayList<Person> person = new ArrayList<>();
+    static ArrayList<Person> person;
+
+    public OpinionService(String dbWay, String dbFeedback){
+        person = getDatabase(dbWay, dbFeedback);
+    }
     public static void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion){
         Person persons = new Person(id, date, type, weight, opinion, setIndex(id));
         person.add(persons);
@@ -35,8 +37,8 @@ public class OpinionService {
                 });
     }
 
-    public void showAll(){
-        person.stream()
+    public static void showAll(){
+        person
                 .forEach(Person ->{
                     System.out.println(Person.getDate());
                     System.out.println("Id: " + Person.getId() + " Type: " + Person.getType() + " Weight: " + Person.getWeight() + " Number of opinion: " + Person.getOpinionNumber());

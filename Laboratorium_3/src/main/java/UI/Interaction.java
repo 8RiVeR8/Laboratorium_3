@@ -1,6 +1,8 @@
 package UI;
+import Logic.OpinionService;
 import Model.opinionType;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ import static Logic.OpinionService.*;
 public class Interaction {
     static Scanner scanner = new Scanner(System.in);
 
-    public void startInteraction() {
+    public void startInteraction() throws SQLException, ClassNotFoundException {
         int choice;
         do {
             displayMenu();
@@ -32,10 +34,10 @@ public class Interaction {
         System.out.println("5. Quit");
     }
 
-    private void processChoice(int choice) {
+    private void processChoice(int choice) throws SQLException, ClassNotFoundException {
         switch (choice) {
-            case 1 -> addPerson();
-            case 2 -> deleteOpinions();
+            case 1 -> addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion());
+            case 2 -> OpinionService.deleteOpinion(setId(), setNumber());
             case 3 -> showOpinion();
             case 4 -> showAll();
             case 5 -> System.out.println("Interaction completed. Thank you!");
@@ -111,17 +113,8 @@ public class Interaction {
         return scanner.nextLine();
     }
 
-    public void addPerson(){
-        addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion());
-    }
-
     public void showOpinion(){
         showPerson(setId());
     }
-
-    public void deleteOpinions(){
-        deleteOpinion(setId(), setNumber());
-    }
-
 
 }

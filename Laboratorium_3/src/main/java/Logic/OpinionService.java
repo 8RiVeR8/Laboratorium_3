@@ -1,20 +1,27 @@
 package Logic;
 import Model.Person;
 import Model.opinionType;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static Logic.SQLiteService.getDatabase;
+import static Logic.SQLiteService.*;
 
 public class OpinionService {
     static ArrayList<Person> person;
+    private static String dbWay;
+    private static String dbFeedback;
 
     public OpinionService(String dbWay, String dbFeedback){
+        OpinionService.dbWay = dbWay;
+        OpinionService.dbFeedback = dbFeedback.toLowerCase();
         person = getDatabase(dbWay, dbFeedback);
     }
-    public static void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion){
+    public static void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion) throws SQLException, ClassNotFoundException {
         Person persons = new Person(id, date, type, weight, opinion, setIndex(id));
         person.add(persons);
+        insertOpinion(persons, dbWay, dbFeedback);
     }
 
     public static int setIndex(int id){
@@ -23,8 +30,9 @@ public class OpinionService {
                 .count()+1;
     }
 
-    public static void deleteOpinion(int id, int number){
+    public static void deleteOpinion(int id, int number) throws SQLException, ClassNotFoundException {
         person.removeIf(Person -> Person.getId() == id && Person.getOpinionNumber() == number);
+        delOpinion(id, number, dbWay, dbFeedback);
     }
     public static void showPerson(int id){
         person.stream()

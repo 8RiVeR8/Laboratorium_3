@@ -49,4 +49,23 @@ public class SQLiteService {
         }
         return output;
     }
+
+    static void delOpinion (int id, int opinionNumber, String dbWay, String dbFeedback) throws SQLException, ClassNotFoundException {
+        Connection junction = connect(dbWay);
+        PreparedStatement delStatement = junction.prepareStatement("DELETE FROM " + dbFeedback + " WHERE id = " + id + " AND number = " + opinionNumber);
+        delStatement.executeUpdate();
+    }
+
+    static void insertOpinion(Person person, String dbWay, String Feedback) throws SQLException, ClassNotFoundException {
+        Connection junction = connect(dbWay);
+        PreparedStatement addStatement = junction.prepareStatement(" INSERT INTO " + Feedback + "(id, data, type, weight, opinion, number) VALUES (?, ?, ?, ?, ?, ?)");
+        addStatement.setInt(1, person.getId());
+        addStatement.setString(2, String.valueOf(person.getDate()));
+        addStatement.setString(3, String.valueOf(person.getType()));
+        addStatement.setInt(4, person.getWeight());
+        addStatement.setString(5, person.getComment());
+        addStatement.setInt(6, person.getOpinionNumber());
+
+        addStatement.executeUpdate();
+    }
 }

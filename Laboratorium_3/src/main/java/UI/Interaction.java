@@ -5,6 +5,7 @@ import Model.opinionType;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static Logic.OpinionService.*;
@@ -64,8 +65,7 @@ public class Interaction {
 
     public static int setWeight(){
         System.out.println("Please enter weight of your opinion (1-5)");
-        int weight = scanner.nextInt();
-        //scanner.nextLine();
+        int weight = tryCatch();
         if(weight>=1 && weight<=5){
             return weight;
         }else{
@@ -78,15 +78,25 @@ public class Interaction {
 
     public static int setId(){
         System.out.println("Please enter user id");
-        int id;
-        id = scanner.nextInt();
-        scanner.nextLine();
-        return id;
+        return tryCatch();
     }
 
     public static int setNumber(){
         System.out.println("Enter number of opinion you want to delete (starts from 1) ");
-        return scanner.nextInt();
+        return tryCatch();
+    }
+
+    public static int tryCatch(){
+        int number = 0;
+        try{
+            number = scanner.nextInt();
+            scanner.nextLine();
+        }catch (InputMismatchException e){
+            System.out.println("Incorrect data. Enter again: ");
+            scanner.nextLine();
+            tryCatch();
+        }
+        return number;
     }
 
 
@@ -109,7 +119,6 @@ public class Interaction {
 
     public static String setOpinion(){
         System.out.println("Please enter opinion about worker: ");
-        scanner.nextLine();
         return scanner.nextLine();
     }
 

@@ -1,8 +1,6 @@
 package UI;
 import Logic.OpinionService;
 import Model.opinionType;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +19,7 @@ public class Interaction implements InteractionInterface{
     }
 
     @Override
-    public void startInteraction() throws SQLException, ClassNotFoundException, IOException, InterruptedException {
+    public void startInteraction() throws SQLException, ClassNotFoundException {
         int choice;
         do {
             displayMenu();
@@ -46,7 +44,7 @@ public class Interaction implements InteractionInterface{
     }
 
     @Override
-    public void processChoice(int choice) throws SQLException, ClassNotFoundException, IOException, InterruptedException {
+    public void processChoice(int choice) throws SQLException, ClassNotFoundException {
         switch (choice) {
             case 1 -> {opinionService.addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion()); cleanScreen();}
             case 2 -> {opinionService.deleteOpinion(setId(), setNumber()); cleanScreen();}
@@ -152,7 +150,7 @@ public class Interaction implements InteractionInterface{
             System.out.flush();
     }
 
-    public void getTrend() throws IOException, InterruptedException {
+    public void getTrend() {
 
         String id = String.valueOf(setId());
 

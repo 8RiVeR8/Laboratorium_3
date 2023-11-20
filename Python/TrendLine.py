@@ -4,34 +4,36 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def read_from_database(employee_id, start_date, ending_date, db_path):
-    connection = sqlite3.connect(db_path)
+def read_from_database(person_id, date_beginning, date_end, db_way):
+    connection = sqlite3.connect(db_way)
     cursor = connection.cursor()
-    params = (employee_id, start_date, ending_date)
+    params = (person_id, date_beginning, date_end)
     cursor.execute("SELECT data, type, weight FROM feedback WHERE id = ? AND data BETWEEN ? AND ? ORDER BY data", params)
-    feedback = cursor.fetchall()
+    report = cursor.fetchall()
     connection.close()
 
-    return feedback
+    return report
 
 
-employee_id = int(sys.argv[1])
-start_date = sys.argv[2]
-ending_date = sys.argv[3]
-db_path = sys.argv[4]
+person_id = int(sys.argv[1])
+date_beginning = sys.argv[2]
+date_end = sys.argv[3]
+db_way = sys.argv[4]
 
 
-data = read_from_database(employee_id, start_date, ending_date, db_path)
+data = read_from_database(person_id, date_beginning, date_end, db_way)
 df = pd.DataFrame(data, columns=['date', 'type', 'weight'])
 
 df['data'] = pd.to_datetime(df['date'])
-df_aggregated = df.groupby(['data', 'type'])['weight'].sum().reset_index()
+df_aggregated = df.groupby(['date', 'type'])['weight'].mean().reset_index()
 
 for op_type in df_aggregated['type'].unique():
     data_by_type = df_aggregated[df_aggregated['type'] == op_type]
-    plt.plot(data_by_type['data'], data_by_type['weight'], label=op_type)
+    plt.plot(data_by_type['date'], data_by_type['weight'], label=op_type)
 
 plt.xlabel('Date')
-plt.ylabel('Weight sum')
+plt.ylabel('Weight average')
 plt.title('Trend line by opinion type')
+plt.legend()
+plt.grid(True)
 plt.show()

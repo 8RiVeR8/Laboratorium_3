@@ -1,8 +1,6 @@
 package Logic;
 import Model.Person;
 import Model.opinionType;
-import UI.Interaction;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;

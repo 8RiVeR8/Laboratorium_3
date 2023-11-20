@@ -11,7 +11,7 @@ public class Main {
         String dbFeedback ="Feedback";
 
         OpinionService Feedback = new OpinionService(dbWay, dbFeedback);
-        Interaction interaction = new Interaction();
+        Interaction interaction = new Interaction(Feedback);
         interaction.startInteraction();
     }
 }

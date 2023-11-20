@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import static Logic.SQLiteService.*;
 
-public class OpinionService {
+public class OpinionService implements OpinionServiceInterface{
     static ArrayList<Person> person;
     private static String dbWay;
     private static String dbFeedback;
@@ -18,23 +18,27 @@ public class OpinionService {
         OpinionService.dbFeedback = dbFeedback.toLowerCase();
         person = getDatabase(dbWay, dbFeedback);
     }
-    public static void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion) throws SQLException, ClassNotFoundException {
+    @Override
+    public void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion) throws SQLException, ClassNotFoundException {
         Person persons = new Person(id, date, type, weight, opinion, setIndex(id));
         person.add(persons);
         insertOpinion(persons, dbWay, dbFeedback);
     }
 
-    public static int setIndex(int id){
+    @Override
+    public int setIndex(int id){
         return (int) person.stream()
                 .filter(Person -> Person.getId() == id)
                 .count()+1;
     }
 
-    public static void deleteOpinion(int id, int number) throws SQLException, ClassNotFoundException {
+    @Override
+    public void deleteOpinion(int id, int number) throws SQLException, ClassNotFoundException {
         person.removeIf(Person -> Person.getId() == id && Person.getOpinionNumber() == number);
         delOpinion(id, number, dbWay, dbFeedback);
     }
-    public static void showPerson(int id){
+    @Override
+    public void showPerson(int id){
         person.stream()
                 .filter(Person -> Person.getId() == id)
                 .forEach(Person ->{
@@ -45,7 +49,8 @@ public class OpinionService {
                 });
     }
 
-    public static void showAll(){
+    @Override
+    public void showAll(){
         person
                 .forEach(Person ->{
                     System.out.println(Person.getDate());

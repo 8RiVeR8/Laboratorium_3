@@ -8,11 +8,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static Logic.OpinionService.*;
 
-public class Interaction {
+public class Interaction implements InteractionInterface{
     static Scanner scanner = new Scanner(System.in);
+    private final OpinionService opinionService;
 
+    public Interaction(OpinionService opinionService) {
+        this.opinionService = opinionService;
+    }
+
+    @Override
     public void startInteraction() throws SQLException, ClassNotFoundException {
         int choice;
         do {
@@ -21,32 +26,37 @@ public class Interaction {
             choice = scanner.nextInt();
             scanner.nextLine(); // Odczyt dodatkowego znaku nowej linii
             processChoice(choice);
-        } while (choice != 5);
+        } while (choice != 6);
 
         scanner.close();
     }
 
-    private void displayMenu() {
+    @Override
+    public void displayMenu() {
         System.out.println("----- Menu -----");
         System.out.println("1. Add opinion about worker");
         System.out.println("2. Delete opinion about worker");
         System.out.println("3. Show specific person");
         System.out.println("4. Show all");
-        System.out.println("5. Quit");
+        System.out.println("5. Trend line");
+        System.out.println("6. Quit");
     }
 
-    private void processChoice(int choice) throws SQLException, ClassNotFoundException {
+    @Override
+    public void processChoice(int choice) throws SQLException, ClassNotFoundException {
         switch (choice) {
-            case 1 -> addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion());
-            case 2 -> OpinionService.deleteOpinion(setId(), setNumber());
+            case 1 -> opinionService.addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion());
+            case 2 -> opinionService.deleteOpinion(setId(), setNumber());
             case 3 -> showOpinion();
-            case 4 -> showAll();
-            case 5 -> System.out.println("Interaction completed. Thank you!");
+            case 4 -> opinionService.showAll();
+            case 5 -> System.out.println("Bedzie wkrotce!");
+            case 6 -> System.out.println("Interaction completed. Thank you!");
             default -> System.out.println("Incorrect choice. Please choose again.");
         }
     }
 
-    public static opinionType setOpinionType() {
+    @Override
+    public opinionType setOpinionType() {
         System.out.println("Enter opinion type \"p\" - POSITIVE  or \"n\" - NEGATIVE");
         String opinionTypes = scanner.nextLine();
         //scanner.nextLine();
@@ -63,7 +73,8 @@ public class Interaction {
         return opinionType.POSITIVE;
     }
 
-    public static int setWeight(){
+    @Override
+    public int setWeight(){
         System.out.println("Please enter weight of your opinion (1-5)");
         int weight = tryCatch();
         if(weight>=1 && weight<=5){
@@ -76,17 +87,20 @@ public class Interaction {
         return weight;
     }
 
-    public static int setId(){
+    @Override
+    public int setId(){
         System.out.println("Please enter user id");
         return tryCatch();
     }
 
-    public static int setNumber(){
+    @Override
+    public int setNumber(){
         System.out.println("Enter number of opinion you want to delete (starts from 1) ");
         return tryCatch();
     }
 
-    public static int tryCatch(){
+    @Override
+    public int tryCatch(){
         int number = 0;
         try{
             number = scanner.nextInt();
@@ -99,8 +113,8 @@ public class Interaction {
         return number;
     }
 
-
-    public static LocalDate setDate(){
+    @Override
+    public LocalDate setDate(){
         System.out.println("Please enter your date (yyyy-MM-dd)");
         String inputData = scanner.nextLine();
         //scanner.nextLine();
@@ -117,13 +131,15 @@ public class Interaction {
         return parsedDate;
     }
 
-    public static String setOpinion(){
+    @Override
+    public String setOpinion(){
         System.out.println("Please enter opinion about worker: ");
         return scanner.nextLine();
     }
 
+    @Override
     public void showOpinion(){
-        showPerson(setId());
+        opinionService.showPerson(setId());
     }
 
 }

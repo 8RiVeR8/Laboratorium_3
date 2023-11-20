@@ -1,7 +1,9 @@
 package Logic;
 import Model.Person;
 import Model.opinionType;
+import UI.Interaction;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,6 +60,18 @@ public class OpinionService implements OpinionServiceInterface{
                     System.out.println("Opinion:\n" + Person.getComment());
                     System.out.println();
                 });
+    }
+
+    public static void trendAnalyze(String id, String start, String finish, String pythonWay) {
+
+        try {
+            String[] command = {"python3", pythonWay, id, start, finish, dbWay};
+            Process process = Runtime.getRuntime().exec(command);
+            process.waitFor();
+
+        } catch (IOException | InterruptedException e)  {
+            e.printStackTrace();
+        }
     }
 
 }

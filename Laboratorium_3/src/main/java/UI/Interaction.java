@@ -2,6 +2,7 @@ package UI;
 import Logic.OpinionService;
 import Model.opinionType;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,13 +13,15 @@ import java.util.Scanner;
 public class Interaction implements InteractionInterface{
     static Scanner scanner = new Scanner(System.in);
     private final OpinionService opinionService;
+    private final String pythonWay;
 
-    public Interaction(OpinionService opinionService) {
+    public Interaction(OpinionService opinionService, String pythonWay) {
         this.opinionService = opinionService;
+        this.pythonWay = pythonWay;
     }
 
     @Override
-    public void startInteraction() throws SQLException, ClassNotFoundException {
+    public void startInteraction() throws SQLException, ClassNotFoundException, IOException, InterruptedException {
         int choice;
         do {
             displayMenu();
@@ -43,13 +46,13 @@ public class Interaction implements InteractionInterface{
     }
 
     @Override
-    public void processChoice(int choice) throws SQLException, ClassNotFoundException {
+    public void processChoice(int choice) throws SQLException, ClassNotFoundException, IOException, InterruptedException {
         switch (choice) {
-            case 1 -> opinionService.addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion());
-            case 2 -> opinionService.deleteOpinion(setId(), setNumber());
-            case 3 -> showOpinion();
-            case 4 -> opinionService.showAll();
-            case 5 -> System.out.println("Bedzie wkrotce!");
+            case 1 -> {opinionService.addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion()); cleanScreen();}
+            case 2 -> {opinionService.deleteOpinion(setId(), setNumber()); cleanScreen();}
+            case 3 -> {showOpinion(); cleanScreen();}
+            case 4 -> {opinionService.showAll(); cleanScreen();}
+            case 5 -> getTrend();
             case 6 -> System.out.println("Interaction completed. Thank you!");
             default -> System.out.println("Incorrect choice. Please choose again.");
         }
@@ -83,7 +86,6 @@ public class Interaction implements InteractionInterface{
             System.out.println("Incorrect weight!");
             setWeight();
         }
-
         return weight;
     }
 
@@ -141,5 +143,27 @@ public class Interaction implements InteractionInterface{
     public void showOpinion(){
         opinionService.showPerson(setId());
     }
+
+    @Override
+    public void cleanScreen() {
+        System.out.println("Press enter to continue");
+        scanner.nextLine();
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+    }
+
+    public void getTrend() throws IOException, InterruptedException {
+
+        String id = String.valueOf(setId());
+
+        System.out.println("Set start of the period to create trend line for:");
+        LocalDate start = setDate();
+
+        System.out.println("Set end of the period to create trend line for:");
+        LocalDate end = setDate();
+
+        OpinionService.trendAnalyze(id, String.valueOf(start), String.valueOf(end), pythonWay);
+    }
+
 
 }

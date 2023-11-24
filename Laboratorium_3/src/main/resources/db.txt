@@ -1,0 +1,11 @@
+1;2023-11-16;1;POSITIVE;2;Projekt oddany na czas.
+1;2023-11-17;2;POSITIVE;4;Kupil pracownikom kawe.
+3;2023-11-19;1;POSITIVE;1;Przychodzi na czas.
+111;2023-11-17;1;NEGATIVE;3;negatywna
+321;2023-11-20;1;POSITIVE;3;Pozytywne nastawienie do zycia. Tak trzymaj.
+4;2023-11-20;1;POSITIVE;1;He cleaned up coffee maker.
+1000;2023-11-15;1;NEGATIVE;2;Nie lubie go.
+1200;2023-11-22;1;POSITIVE;4;cos
+1;2023-11-17;3;NEGATIVE;3;Nie posprzatal toalety
+5;2023-11-15;1;POSITIVE;3;super robota areczku
+900;2023-11-24;1;POSITIVE;2;Kupil mleko

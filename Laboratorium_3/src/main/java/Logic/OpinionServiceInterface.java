@@ -11,5 +11,6 @@ public interface OpinionServiceInterface {
     void deleteOpinion(int id, int number) throws SQLException, ClassNotFoundException;
     void showPerson(int id);
     void showAll();
+    void endProgram();
 
 }

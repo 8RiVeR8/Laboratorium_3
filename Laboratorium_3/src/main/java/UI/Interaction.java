@@ -1,25 +1,21 @@
 package UI;
 import Logic.OpinionService;
 import Model.opinionType;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
 public class Interaction implements InteractionInterface{
     static Scanner scanner = new Scanner(System.in);
     private final OpinionService opinionService;
-    private final String pythonWay;
 
-    public Interaction(OpinionService opinionService, String pythonWay) {
+    public Interaction(OpinionService opinionService) {
         this.opinionService = opinionService;
-        this.pythonWay = pythonWay;
     }
 
     @Override
-    public void startInteraction() throws SQLException, ClassNotFoundException {
+    public void startInteraction() {
         int choice;
         do {
             displayMenu();
@@ -29,6 +25,7 @@ public class Interaction implements InteractionInterface{
             processChoice(choice);
         } while (choice != 6);
 
+        opinionService.endProgram();
         scanner.close();
     }
 
@@ -44,7 +41,7 @@ public class Interaction implements InteractionInterface{
     }
 
     @Override
-    public void processChoice(int choice) throws SQLException, ClassNotFoundException {
+    public void processChoice(int choice) {
         switch (choice) {
             case 1 -> {opinionService.addOpinion(setId(), setDate(), setOpinionType(), setWeight(), setOpinion()); cleanScreen();}
             case 2 -> {opinionService.deleteOpinion(setId(), setNumber()); cleanScreen();}
@@ -102,13 +99,17 @@ public class Interaction implements InteractionInterface{
     @Override
     public int tryCatch(){
         int number = 0;
-        try{
-            number = scanner.nextInt();
-            scanner.nextLine();
-        }catch (InputMismatchException e){
-            System.out.println("Incorrect data. Enter again: ");
-            scanner.nextLine();
-            tryCatch();
+        boolean validInput = false;
+
+        while (!validInput){
+            try{
+                number = scanner.nextInt();
+                scanner.nextLine();
+                validInput = true;
+            }catch (InputMismatchException e){
+                System.out.println("Incorrect data. Enter again: ");
+                scanner.nextLine();
+            }
         }
         return number;
     }
@@ -117,7 +118,6 @@ public class Interaction implements InteractionInterface{
     public LocalDate setDate(){
         System.out.println("Please enter your date (yyyy-MM-dd)");
         String inputData = scanner.nextLine();
-        //scanner.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         LocalDate parsedDate = null;
@@ -151,16 +151,13 @@ public class Interaction implements InteractionInterface{
     }
 
     public void getTrend() {
-
-        String id = String.valueOf(setId());
-
         System.out.println("Set start of the period to create trend line for:");
         LocalDate start = setDate();
 
         System.out.println("Set end of the period to create trend line for:");
         LocalDate end = setDate();
 
-        OpinionService.trendAnalyze(id, String.valueOf(start), String.valueOf(end), pythonWay);
+        OpinionService.trendAnalyze(setId(), start, end);
     }
 
 

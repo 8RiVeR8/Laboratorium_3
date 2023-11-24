@@ -1,28 +1,27 @@
 package Logic;
 import Model.Person;
 import Model.opinionType;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import static Logic.SQLiteService.*;
+import static Logic.TxtFileWorker.*;
 
 public class OpinionService implements OpinionServiceInterface{
     static ArrayList<Person> person;
-    private static String dbWay;
-    private static String dbFeedback;
+    private static String TxtName;
 
-    public OpinionService(String dbWay, String dbFeedback){
-        OpinionService.dbWay = dbWay;
-        OpinionService.dbFeedback = dbFeedback.toLowerCase();
-        person = getDatabase(dbWay, dbFeedback);
+    public OpinionService(String TxtName){
+        OpinionService.TxtName = TxtName;
+        person = getTxt(TxtName);
+    }
+
+    @Override
+    public void endProgram(){
+        TxtFileWorker.insertOpinion(person, TxtName);
     }
     @Override
-    public void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion) throws SQLException, ClassNotFoundException {
+    public void addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion) {
         Person persons = new Person(id, date, type, weight, opinion, setIndex(id));
         person.add(persons);
-        insertOpinion(persons, dbWay, dbFeedback);
     }
 
     @Override
@@ -33,9 +32,8 @@ public class OpinionService implements OpinionServiceInterface{
     }
 
     @Override
-    public void deleteOpinion(int id, int number) throws SQLException, ClassNotFoundException {
+    public void deleteOpinion(int id, int number) {
         person.removeIf(Person -> Person.getId() == id && Person.getOpinionNumber() == number);
-        delOpinion(id, number, dbWay, dbFeedback);
     }
     @Override
     public void showPerson(int id){
@@ -60,16 +58,23 @@ public class OpinionService implements OpinionServiceInterface{
                 });
     }
 
-    public static void trendAnalyze(String id, String start, String finish, String pythonWay) {
-
-        try {
-            String[] command = {"python3", pythonWay, id, start, finish, dbWay};
-            Process process = Runtime.getRuntime().exec(command);
-            process.waitFor();
-
-        } catch (IOException | InterruptedException e)  {
-            e.printStackTrace();
+    public static double getOpinionValue(opinionType type){
+        if (type == opinionType.POSITIVE) {
+            return 1.0;
+        } else if (type == opinionType.NEGATIVE) {
+            return -1.0;
+        } else {
+            return 0.0;
         }
+    }
+
+    public static void trendAnalyze(int id, LocalDate start, LocalDate finish) {
+        double trend;
+        trend = person.stream()
+                .filter(Person -> Person.getId() == id && Person.getDate().isAfter(start) && Person.getDate().isBefore(finish))
+                .mapToDouble(Person -> getOpinionValue(Person.getType())* Person.getWeight())
+                .sum();
+        System.out.println("Trend for person: " + id + " between " + start + " and " + finish + ": " + trend);
     }
 
 }

@@ -21,7 +21,7 @@ public class Interaction implements InteractionInterface{
             displayMenu();
             System.out.print("Choose option: ");
             choice = scanner.nextInt();
-            scanner.nextLine(); // Odczyt dodatkowego znaku nowej linii
+            scanner.nextLine();
             processChoice(choice);
         } while (choice != 6);
 
@@ -116,17 +116,22 @@ public class Interaction implements InteractionInterface{
 
     @Override
     public LocalDate setDate(){
-        System.out.println("Please enter your date (yyyy-MM-dd)");
-        String inputData = scanner.nextLine();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         LocalDate parsedDate = null;
-        try {
-            parsedDate = LocalDate.parse(inputData, formatter);
+        boolean isCorrect = false;
+        String inputData;
 
-        } catch (Exception e) {
-            System.out.println("Wrong date format.");
-            e.printStackTrace();
+        while(!isCorrect){
+            try {
+                System.out.println("Please enter your date (yyyy-MM-dd)");
+                inputData = scanner.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                parsedDate = LocalDate.parse(inputData, formatter);
+                isCorrect = true;
+
+            } catch (Exception e) {
+                System.out.println("Wrong date format. Try again: ");
+            }
         }
         return parsedDate;
     }
@@ -159,6 +164,5 @@ public class Interaction implements InteractionInterface{
 
         OpinionService.trendAnalyze(setId(), start, end);
     }
-
 
 }

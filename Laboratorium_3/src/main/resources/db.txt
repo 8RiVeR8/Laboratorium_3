@@ -9,3 +9,4 @@
 1;2023-11-17;3;NEGATIVE;3;Nie posprzatal toalety
 5;2023-11-15;1;POSITIVE;3;super robota areczku
 900;2023-11-24;1;POSITIVE;2;Kupil mleko
+24;2023-11-25;1;POSITIVE;3;Super wykonana praca!

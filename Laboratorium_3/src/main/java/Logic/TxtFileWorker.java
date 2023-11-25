@@ -11,18 +11,15 @@ public class TxtFileWorker {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Podziel linię na części, używając odpowiedniego separatora
-                String[] parts = line.split(";"); // Załóżmy, że dane są oddzielone średnikami
+                String[] parts = line.split(";");
 
-                // Parsuj dane i twórz obiekt Person
                 int id = Integer.parseInt(parts[0]);
                 LocalDate date = LocalDate.parse(parts[1]);
                 int number = Integer.parseInt(parts[2]);
-                opinionType type = opinionType.valueOf(parts[3]); // Zakładam, że Type to enum
+                opinionType type = opinionType.valueOf(parts[3]);
                 int weight = Integer.parseInt(parts[4]);
                 String comment = parts[5];
 
-                // Dodaj obiekt Person do listy
                 Person person = new Person(id, date, type, weight, comment, number);
                 persons.add(person);
             }
@@ -36,7 +33,6 @@ public class TxtFileWorker {
     public static void insertOpinion(ArrayList<Person> personList, String fileName) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, false))) {
             for (Person person : personList) {
-                // Tworzenie linii tekstu z danymi obiektu Person
                 String line = person.getId() + ";" +
                         person.getDate() + ";" +
                         person.getOpinionNumber() + ";" +
@@ -44,9 +40,8 @@ public class TxtFileWorker {
                         person.getWeight() + ";" +
                         person.getComment();
 
-                // Zapisz linię do pliku
                 bw.write(line);
-                bw.newLine(); // Dodaj nową linię po każdym obiekcie Person
+                bw.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();

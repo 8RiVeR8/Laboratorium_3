@@ -5,6 +5,23 @@ import java.io.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
+/**
+ * TxtFileWorker provides methods to read and write Person objects to a text file.
+ * It uses a ';' delimited format for storage.
+
+ * Methods:
+ * - getTxt(String fileName): Reads and parses a text file, returning a list of Person objects.
+ * - insertOpinion(ArrayList<Person> personList, String fileName): Writes a list of Person objects to a text file.
+ *   If the file exists, its content is replaced; otherwise, a new file is created.
+
+ * Note: Date formatting ensures consistent representation.
+
+ * Example Usage:
+ * ArrayList<Person> persons = TxtFileWorker.getTxt("input.txt");
+ * // Modify persons list...
+ * TxtFileWorker.insertOpinion(persons, "output.txt");
+ */
+
 public class TxtFileWorker {
     static ArrayList<Person> getTxt(String fileName)    {
         ArrayList<Person> persons = new ArrayList<>();

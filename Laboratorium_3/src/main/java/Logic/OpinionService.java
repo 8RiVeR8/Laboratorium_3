@@ -5,6 +5,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import static Logic.TxtFileWorker.*;
 
+/**
+ * OpinionService manages Person objects, facilitating addition, deletion,
+ * and display of opinions. It uses TxtFileWorker for data persistence,
+ * with key methods such as addOpinion(), deleteOpinion(), showPerson(),
+ * showAll(), and trendAnalyze().
+
+ * Methods:
+ * - addOpinion(int id, LocalDate date, opinionType type, int weight, String opinion):
+ *   Adds a new opinion based on user input.
+ * - setIndex(int id): Generates a unique opinion number for a given user ID.
+ * - deleteOpinion(int id, int number): Removes a specific opinion based on user input.
+ * - showPerson(int id): Displays all opinions for a specific user ID.
+ * - showAll(): Displays all stored opinions.
+ * - getOpinionValue(opinionType type): Assigns numerical values to opinion types (Positive, Negative).
+ * - trendAnalyze(int id, LocalDate start, LocalDate finish): Analyzes opinion trends
+ *   for a specified user ID within a given time period.
+ */
+
 public class OpinionService implements OpinionServiceInterface{
     static ArrayList<Person> person;
     private static String TxtName;

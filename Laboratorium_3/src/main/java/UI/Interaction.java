@@ -6,6 +6,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * The Interaction class is the user interface for OpinionService, providing menu-driven
+ * options for adding, deleting, displaying, and analyzing worker opinions. It
+ * implements InteractionInterface and includes methods for user input handling and
+ * interaction control. Notable methods include startInteraction(), processChoice(int choice),
+ * and getTrend(). The class ensures input validation and a clean user interface.
+ */
+
 public class Interaction implements InteractionInterface{
     static Scanner scanner = new Scanner(System.in);
     private final OpinionService opinionService;
